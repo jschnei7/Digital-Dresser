@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitCheck AI | Institutional Investor Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --panel: #0d0d0f;
+            --accent: #bcff00;
+            --danger: #ff3e3e;
+            --warning: #ffb800;
+            --border: #222224;
+            --text-dim: #666;
+            --mono: 'Space Mono', monospace;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg);
+            color: #fff;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* --- LAYOUT ARCHITECTURE --- */
+        .sidebar-left { width: 400px; border-right: 1px solid var(--border); display: flex; flex-direction: column; background: var(--panel); }
+        .main-stage { flex-grow: 1; position: relative; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #151517 0%, #030303 100%); overflow: hidden; }
+        .sidebar-right { width: 350px; border-left: 1px solid var(--border); display: flex; flex-direction: column; background: var(--panel); }
+
+        .header { padding: 30px; border-bottom: 1px solid var(--border); }
+        h1 { margin: 0; font-size: 1.4rem; color: var(--accent); letter-spacing: -1px; }
+        .scroll-content { padding: 30px; overflow-y: auto; flex-grow: 1; }
+
+        /* --- UI COMPONENTS --- */
+        .module { margin-bottom: 40px; }
+        h2 { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 20px; }
+        
+        label { font-family: var(--mono); font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 8px; }
+        input, select { 
+            width: 100%; background: #161618; border: 1px solid #333; padding: 14px; color: #fff; border-radius: 8px; 
+            font-family: var(--mono); font-size: 0.8rem; margin-bottom: 15px; box-sizing: border-box;
+        }
+
+        .btn-action {
+            width: 100%; padding: 22px; background: var(--accent); color: #000; border: none; font-weight: 800; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px; border-radius: 12px; transition: 0.3s;
+        }
+        .btn-action:hover { box-shadow: 0 0 30px rgba(188, 255, 0, 0.4); transform: translateY(-2px); }
+
+        /* --- THE MIRROR --- */
+        .model-container { position: relative; height: 90%; z-index: 1; }
+        #user-img { height: 100%; border-radius: 16px; transition: 0.5s filter ease; }
+        
+        .scan-line {
+            position: absolute; width: 120%; height: 2px; background: var(--accent); left: -10%; 
+            display: none; box-shadow: 0 0 25px var(--accent); z-index: 10;
+        }
+
+        .fabric-mesh {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(188,255,0,0.05) 0px, rgba(188,255,0,0.05) 1px, transparent 1px, transparent 10px);
+            display: none; border-radius: 16px; opacity: 0.6; z-index: 5;
+        }
+
+        /* --- DATA OUTPUTS --- */
+        .stat-card { background: #161618; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #222; }
+        .stat-label { font-family: var(--mono); font-size: 0.6rem; color: var(--text-dim); }
+        .stat-value { font-size: 2rem; font-weight: 700; margin-top: 5px; }
+        
+        .sys-log { font-family: var(--mono); font-size: 0.7rem; color: #4a4a4f; line-height: 1.6; height: 150px; overflow-y: hidden; }
+        .log-new { color: var(--accent); }
+
+        /* Landmark Nodes */
+        .point { position: absolute; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: none; box-shadow: 0 0 10px var(--accent); z-index: 6; }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar-left">
+    <div class="header">
+        <h1>FITCHECK // CORE</h1>
+        <p style="font-size: 0.7rem; color: var(--text-dim);">V-DRESSING ROOM ENGINE v4.0</p>
+    </div>
+    <div class="scroll-content">
+        <div class="module">
+            <h2>01. USER BIOMETRICS</h2>
+            <label>TARGET IDENTITY</label>
+            <input type="text" value="Jacob Schneiderman" disabled>
+            <div style="display: flex; gap: 10px;">
+                <div style="flex:1">
+                    <label>WAIST (IN)</label>
+                    <input type="number" id="waist" value="30">
+                </div>
+                <div style="flex:1">
+                    <label>CHEST (IN)</label>
+                    <input type="number" id="chest" value="38">
+                </div>
+            </div>
+        </div>
+
+        <div class="module">
+            <h2>02. FINANCIAL LIQUIDITY</h2>
+            <label>AVAILABLE FUNDS ($)</label>
+            <input type="number" id="bank" value="450">
+            <label>BEN'S RETURN FRICTION</label>
+            <select id="printer">
+                <option value="high">No Printer (High Friction)</option>
+                <option value="low">Printer Ready (Low Friction)</option>
+            </select>
+        </div>
+
+        <div class="module">
+            <h2>03. GARMENT METADATA</h2>
+            <label>BRAND SOURCE</label>
+            <select id="brand">
+                <option value="levis">LEVI'S (High Trust / Low Variance)</option>
+                <option value="zara">ZARA (Mid Trust / High Variance)</option>
+                <option value="asos">ASOS (Low Trust / Catfish Risk)</option>
+            </select>
+            <label>RETAIL PRICE ($)</label>
+            <input type="number" id="price" value="110">
+        </div>
+
+        <button class="btn-action" onclick="executeTryOn()">Initialize Neural Scan</button>
+    </div>
+</aside>
+
+<main class="main-stage">
+    <div class="scan-line" id="scanLine"></div>
+    <div class="model-container" id="container">
+        <img src="my-model.jpg" id="user-img" onerror="this.src='https://i.ibb.co/LhY0m2P/Jacob-Model.jpg'">
+        <div class="fabric-mesh" id="mesh"></div>
+        
+        <div class="point" style="top:25%; left:50%;"></div> <div class="point" style="top:40%; left:38%;"></div> <div class="point" style="top:40%; left:62%;"></div> <div class="point" style="top:55%; left:50%;"></div> <div class="point" style="top:85%; left:45%;"></div> <div class="point" style="top:85%; left:55%;"></div> </div>
+</main>
+
+<aside class="sidebar-right">
+    <div class="header">
+        <h2>04. ENGINE LOG</h2>
+        <div class="sys-log" id="sysLog">> System Ready.<br>> Awaiting Landmark Initialization...</div>
+    </div>
+    <div class="scroll-content">
+        <div class="stat-card">
+            <div class="stat-label">FIT CONFIDENCE</div>
+            <div class="stat-value" id="fitScore">--%</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">CATFISH RISK (NOAH'S PARAM)</div>
+            <div class="stat-value" id="catfishRisk" style="color: var(--warning);">--</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">REFUND LIMBO (ISAIAH'S PARAM)</div>
+            <div class="stat-value" id="refundLimbo">--</div>
+            <p style="font-size: 0.6rem; color: var(--text-dim); margin-top: 5px;">Days until balance is restored.</p>
+        </div>
+
+        <div id="verdict" style="margin-top: 20px;"></div>
+    </div>
+</aside>
+
+<script>
+    const brands = {
+        levis: { fit: 96, catfish: "LOW", wait: 7, color: "#bcff00" },
+        zara: { fit: 74, catfish: "MEDIUM", wait: 14, color: "#ffb800" },
+        asos: { fit: 58, catfish: "CRITICAL", wait: 12, color: "#ff3e3e" }
+    };
+
+    function log(msg) {
+        const logger = document.getElementById('sysLog');
+        logger.innerHTML += `<br><span class="log-new">> ${msg}</span>`;
+        logger.scrollTop = logger.scrollHeight;
+    }
+
+    function executeTryOn() {
+        const btn = document.querySelector('.btn-action');
+        const points = document.querySelectorAll('.point');
+        const scan = document.getElementById('scanLine');
+        const img = document.getElementById('user-img');
+        const mesh = document.getElementById('mesh');
+
+        // Reset
+        btn.disabled = true;
+        btn.innerText = "PROCESSING...";
+        img.style.filter = "grayscale(1) brightness(0.4) blur(2px)";
+        scan.style.display = "block";
+        scan.animate([{top: '0%'}, {top: '100%'}, {top: '0%'}], {duration: 3000, iterations: 1});
+
+        log("Detecting body landmarks...");
+        setTimeout(() => { points.forEach(p => p.style.display = "block"); }, 800);
+        
+        log("Analyzing brand sizing table...");
+        setTimeout(() => { log("Calculating fabric drape physics..."); }, 1600);
+
+        setTimeout(() => {
+            // Logic Collisions
+            const b = brands[document.getElementById('brand').value];
+            const price = parseFloat(document.getElementById('price').value);
+            const bank = parseFloat(document.getElementById('bank').value);
+            const printer = document.getElementById('printer').value;
+            const impact = (price / bank) * 100;
+
+            // Finalizing Visuals
+            scan.style.display = "none";
+            img.style.filter = "none";
+            mesh.style.display = "block";
+            btn.disabled = false;
+            btn.innerText = "RE-INITIALIZE SCAN";
+
+            // Populate Analytics
+            document.getElementById('fitScore').innerText = b.fit + "%";
+            document.getElementById('catfishRisk').innerText = b.catfish;
+            document.getElementById('refundLimbo').innerText = b.wait + " DAYS";
+
+            // The Investor Verdict
+            const v = document.getElementById('verdict');
+            if (b.fit > 80 && impact < 35 && printer === 'low') {
+                v.innerHTML = `<div style="background:var(--accent); color:black; padding:20px; border-radius:12px; font-weight:800; text-align:center;">PROCEED: OPTIMAL BUY</div>`;
+                log("Purchase valid. Low return friction.");
+            } else {
+                v.innerHTML = `<div style="background:var(--danger); color:white; padding:20px; border-radius:12px; font-weight:800; text-align:center;">STOP: HIGH RISK</div>`;
+                log("WARNING: Sizing variance detected. Potential financial strain.");
+            }
+
+        }, 3200);
+    }
+</script>
+</body>
+</html>
