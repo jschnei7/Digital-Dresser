@@ -3,309 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitCheck | Your Virtual Stylist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <title>FitCheck | Institutional Clarity Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-sage: #6B705C;
-            --soft-sand: #D4A373;
-            --cream-bg: #FDFCF8;
-            --warm-white: #ffffff;
-            --text-dark: #333533;
-            --danger-red: #d9534f;
-            --success-green: #28A745;
-            --glass: rgba(255, 255, 255, 0.8);
+            --sage: #6B705C;
+            --sand: #D4A373;
+            --cream: #FDFCF8;
+            --bg: #F4F1EA;
+            --text: #333333;
+            --danger: #E63946;
+            --success: #2A9D8F;
+            --mono: 'Space Mono', monospace;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--cream-bg);
-            color: var(--text-dark);
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
             display: grid;
-            grid-template-columns: 360px 1fr 360px;
+            grid-template-columns: 380px 1fr 400px;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* --- NAVIGATION & PROFILE --- */
+        /* --- LEFT SIDEBAR: CONFIGURATION --- */
         nav {
-            background: var(--warm-white);
+            background: white;
             padding: 40px;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            box-shadow: 10px 0 40px rgba(0,0,0,0.02);
-            z-index: 10;
-            border-right: 1px solid #f0f0f0;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.02);
         }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--primary-sage);
-            margin-bottom: 40px;
-        }
+        .brand-header { font-size: 2.2rem; font-weight: 700; color: var(--sage); margin-bottom: 5px; }
+        .version { font-family: var(--mono); font-size: 0.65rem; color: #999; margin-bottom: 30px; }
 
-        .profile-hub {
-            background: #fdfcf8;
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid #f0f0f0;
-            margin-bottom: 35px;
-            text-align: center;
-        }
+        .section-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--sage); letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
 
-        .avatar-preview {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #eee;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            border: 3px solid var(--soft-sand);
-        }
-
-        /* --- INPUT FIELDS --- */
-        .control-group { margin-bottom: 22px; }
-        label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--primary-sage); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+        .control-group { margin-bottom: 25px; }
+        label { display: block; font-size: 0.75rem; font-weight: 600; color: #666; margin-bottom: 8px; }
+        
         input, select {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: 1px solid #e5e5e5;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #E0E0E0;
             background: #fafafa;
             font-family: inherit;
             box-sizing: border-box;
-            outline: none;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
-        input:focus { border-color: var(--soft-sand); background: #fff; box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.1); }
+        input:focus { border-color: var(--sand); background: white; outline: none; }
 
-        .btn-try-on {
-            background: var(--primary-sage);
+        .btn-execute {
+            background: var(--sage);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-weight: 600;
-            font-size: 1rem;
+            padding: 22px;
+            border-radius: 18px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
         }
-        .btn-try-on:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(107, 112, 92, 0.2); }
+        .btn-execute:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(107, 112, 92, 0.2); }
 
-        /* --- THE MIRROR STAGE --- */
+        /* --- CENTER: THE VIRTUAL MIRROR --- */
         main {
             position: relative;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background-image: radial-gradient(circle at center, #ffffff 0%, #FDFCF8 100%);
+            align-items: center;
+            background: radial-gradient(circle at center, #ffffff 0%, #F4F1EA 100%);
         }
 
-        .mirror-arch {
+        .mirror-housing {
             position: relative;
-            height: 88vh;
+            height: 85vh;
             width: 48vh;
             background: white;
             border-radius: 240px 240px 60px 60px;
-            box-shadow: 0 50px 120px rgba(0,0,0,0.08);
             border: 15px solid white;
+            box-shadow: 0 60px 120px rgba(0,0,0,0.08);
             overflow: hidden;
             display: flex;
             justify-content: center;
         }
 
-        #avatar-main {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        #digital-twin { height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .scan-animation {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 8px;
-            background: var(--soft-sand);
-            display: none;
-            filter: blur(4px);
-            z-index: 5;
-            animation: scanLoop 2.5s infinite ease-in-out;
+        .scan-pulse {
+            position: absolute; width: 100%; height: 4px; background: var(--sand);
+            top: 0; left: 0; z-index: 50; display: none;
+            box-shadow: 0 0 30px var(--sand);
+            animation: scanLoop 3s infinite ease-in-out;
         }
         @keyframes scanLoop { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
 
-        /* --- INSIGHTS & ANALYTICS --- */
-        .insights-bar {
-            background: var(--warm-white);
+        /* Biometric Nodes (Sarah & Sydney) */
+        .landmark {
+            position: absolute; width: 10px; height: 10px; background: var(--sand);
+            border-radius: 50%; display: none; z-index: 60;
+            box-shadow: 0 0 20px var(--sand);
+            animation: nodePulse 1.5s infinite;
+        }
+        @keyframes nodePulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+
+        /* --- RIGHT SIDEBAR: CLARITY LOGIC --- */
+        .clarity-panel {
+            background: white;
             padding: 40px;
+            border-left: 1px solid #eee;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            border-left: 1px solid #f0f0f0;
         }
 
-        .stylist-bubble {
-            background: #F8F9F5;
+        .bestie-box {
+            background: #F9F9F7;
+            border-radius: 24px 24px 24px 4px;
             padding: 25px;
-            border-radius: 25px 25px 25px 5px;
             font-size: 0.95rem;
             line-height: 1.6;
+            border: 1px solid #f1f1ee;
             margin-bottom: 30px;
-            border: 1px solid #f0f0f0;
-            color: #555;
+            color: #444;
         }
 
-        .stat-pill {
-            background: #fdfdfd;
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #f2f2f2;
-        }
-        .stat-pill b { font-size: 1.1rem; color: var(--primary-sage); }
+        .metric-card { background: var(--cream); border-radius: 24px; padding: 25px; margin-bottom: 25px; border: 1px solid #f0f0f0; }
+        .metric-value { font-size: 3.5rem; font-weight: 700; color: var(--sage); text-align: center; }
 
-        .verdict-banner {
-            text-align: center;
-            padding: 20px;
-            border-radius: 16px;
-            margin-top: 20px;
-            font-weight: 700;
-            display: none;
+        /* Review Mirror (Noah & Sydney) */
+        .review-mirror { margin-top: 20px; }
+        .review-window {
+            width: 100%; height: 180px; border-radius: 20px;
+            background: #eee; overflow: hidden; position: relative;
+            border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;
         }
+        .review-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .review-caption { font-size: 0.7rem; color: #999; text-transform: uppercase; text-align: center; margin-top: 10px; font-family: var(--mono); }
+
+        .friction-alert { color: var(--danger); font-size: 0.8rem; font-weight: 700; background: #FFF5F5; padding: 12px; border-radius: 10px; display: none; margin-top: 15px; }
 
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">FitCheck</div>
+        <div class="brand-header">FitCheck</div>
+        <div class="version">NEURAL CLARITY ENGINE // v5.2</div>
         
-        <div class="profile-hub">
-            <div class="avatar-preview">
-                <img src="my-model.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://i.ibb.co/LhY0m2P/Jacob-Model.jpg'">
+        <div class="control-group">
+            <div class="section-label">01 / User Identity</div>
+            <label>Current Profile: Jacob Schneiderman</label>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;"><label>WAIST</label><input type="text" value="30 in" disabled></div>
+                <div style="flex:1;"><label>CHEST</label><input type="text" value="38 in" disabled></div>
             </div>
-            <h3 style="margin:0;">Jacob Schneiderman</h3>
-            <span style="font-size:0.8rem; color:#999;">UO Student • 30" Waist</span>
         </div>
 
         <div class="control-group">
-            <label>Shopping Destination</label>
-            <select id="brandChoice">
-                <option value="levis">Levi's (Comfort Focus)</option>
-                <option value="zara">Zara (Modern Slim)</option>
-                <option value="asos">ASOS (Value Range)</option>
+            <div class="section-label">02 / The Item</div>
+            <label>BRAND LISTING</label>
+            <select id="brand-input">
+                <option value="levis">Levi's (94% Fit Accuracy)</option>
+                <option value="zara">Zara (Vanity Sizing / Slim Cut)</option>
+                <option value="asos">ASOS (Extreme Batch Variance)</option>
+            </select>
+            
+            <label style="margin-top:15px">FABRIC BLEND</label>
+            <select id="fabric-input">
+                <option value="cotton">100% Raw Cotton (Durable)</option>
+                <option value="poly">Polyester Blend (High Catfish Risk)</option>
+                <option value="linen">Natural Linen (High Crease)</option>
             </select>
         </div>
 
         <div class="control-group">
-            <label>Item Price ($)</label>
-            <input type="number" id="itemPrice" value="115">
+            <div class="section-label">03 / Financials (Isaiah)</div>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;"><label>ITEM PRICE ($)</label><input type="number" id="price-input" value="115"></div>
+                <div style="flex:1;"><label>BALANCE ($)</label><input type="number" id="bank-input" value="340"></div>
+            </div>
         </div>
 
         <div class="control-group">
-            <label>Available Funds ($)</label>
-            <input type="number" id="wallet" value="340">
+            <div class="section-label">04 / Logistics (Ben)</div>
+            <select id="logistics-input">
+                <option value="low">Printer Ready (Low Friction)</option>
+                <option value="high">No Printer (High Return Barrier)</option>
+            </select>
         </div>
 
-        <button class="btn-try-on" onclick="initiateTryOn()">Step Into Mirror</button>
+        <button class="btn-execute" onclick="triggerFitCheck()">Process Neural Try-On</button>
     </nav>
 
     <main>
-        <div class="mirror-arch">
-            <div id="scanner" class="scan-animation"></div>
-            <img id="avatar-main" src="my-model.jpg" alt="Jacob Avatar" onerror="this.src='https://i.ibb.co/LhY0m2P/Jacob-Model.jpg'">
+        <div class="mirror-housing">
+            <div id="scanner" class="scan-pulse"></div>
+            
+            <div class="landmark" style="top:55%; left:48%;"></div> <div class="landmark" style="top:38%; left:36%;"></div> <div class="landmark" style="top:38%; left:60%;"></div> <img id="digital-twin" src="https://i.ibb.co/LhY0m2P/Jacob-Model.jpg" alt="Jacob Digital Twin" onerror="this.src='https://images.unsplash.com/photo-1519085185758-18975f74031f?q=80&w=600'">
         </div>
     </main>
 
-    <aside class="insights-bar">
-        <h2 style="font-family:'Playfair Display'; margin-top:0;">Stylist Notes</h2>
-        
-        <div id="chatBubble" class="chat-bubble">
-            Welcome back, Jacob! I'm ready to map your biometrics to the brand sizing charts. Let's see if this is a safe buy.
+    <aside class="clarity-panel">
+        <div class="bestie-box" id="stylist-chat">
+            Hey Jacob! I'm ready to map your biometrics to the brand sizing charts. Let's see if this is a safe buy.
         </div>
 
-        <div id="resultsPanel" style="display:none;">
-            <div class="stat-pill">
-                <span>Fit Confidence</span>
-                <b id="fitVal">--%</b>
-            </div>
-            <div class="stat-pill">
-                <span>Refund Window</span>
-                <b id="waitVal">-- Days</b>
-            </div>
-            <div class="stat-pill">
-                <span>Budget Impact</span>
-                <b id="impactVal">--%</b>
-            </div>
-            
-            <div id="verdictBox" class="verdict-banner"></div>
+        <div class="metric-card">
+            <div class="section-label">Fit Confidence (Sarah)</div>
+            <div class="metric-value" id="res-score">--%</div>
+            <div id="friction-warning" class="friction-alert">⚠️ BEN'S WARNING: High return risk + Physical barrier detected.</div>
         </div>
 
-        <button class="btn-try-on" style="background:transparent; border:2px solid var(--primary-sage); color:var(--primary-sage); margin-top:auto;">Share with Friends</button>
+        <div class="metric-card">
+            <div class="section-label">Material Weave (Noah)</div>
+            <p id="res-material" style="font-size:0.9rem; color:#666;">Awaiting scan...</p>
+        </div>
+
+        <div class="review-mirror">
+            <div class="section-label">Review Mirror (Sync: 30" Waist)</div>
+            <div class="review-window">
+                <span id="review-text" style="color:#bbb; font-size:0.8rem;">Analyzing customer photos...</span>
+                <img id="review-photo" class="review-img" src="">
+            </div>
+            <div class="review-caption" id="review-user">Actual Draping vs. Studio Lighting</div>
+        </div>
+
+        <div class="metric-card" style="margin-top:30px;">
+            <div class="section-label">Isaiah's Pending Risk</div>
+            <p id="res-money" style="font-size:0.9rem; color:#666; line-height:1.5;">--</p>
+        </div>
     </aside>
 
     <script>
-        const brandIntelligence = {
-            levis: { fit: 94, wait: 7, msg: "Levi's classic denim is a perfect match for your frame. It's a 'Safe Buy' with low sizing variance!" },
-            zara: { fit: 74, wait: 14, msg: "Heads up! Zara runs slim. I've adjusted your avatar to account for the 'Wish.com effect' Noah mentioned." },
-            asos: { fit: 66, wait: 10, msg: "ASOS quality can vary. Be careful with synthetic fabrics that don't drape like the original photo." }
+        const clarityDB = {
+            levis: { fit: 96, wait: 7, user: "Sydney_UO", note: "Levi's is remarkably consistent for your frame. Sizing clarity: OPTIMAL.", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=400" },
+            zara: { fit: 71, wait: 14, user: "Alex_UO", note: "Zara uses 'Slim-European' cuts. Based on your 30\" waist, expect tension at the hip landmarks.", img: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=400" },
+            asos: { fit: 54, wait: 12, user: "Sam_UO", note: "Critical variance detected in this batch. Sarah's gamble logic is at 70% probability.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=400" }
         };
 
-        function initiateTryOn() {
+        function triggerFitCheck() {
             const scanner = document.getElementById('scanner');
-            const chat = document.getElementById('chatBubble');
-            const results = document.getElementById('resultsPanel');
-            const avatar = document.getElementById('avatar-main');
-            const verdict = document.getElementById('verdictBox');
-
-            // Start Analysis Animation
+            const twin = document.getElementById('digital-twin');
+            const nodes = document.querySelectorAll('.landmark');
+            const chat = document.getElementById('stylist-chat');
+            
+            // Visual Sequence
             scanner.style.display = 'block';
-            avatar.style.filter = "sepia(0.4) brightness(1.1) blur(1px)";
-            chat.innerText = "Analyzing body landmarks and calculating fabric drape physics...";
-            results.style.display = 'none';
-            verdict.style.display = 'none';
+            twin.style.filter = "grayscale(100%) brightness(0.6) blur(2px)";
+            nodes.forEach(n => n.style.display = 'none');
+            document.getElementById('review-photo').style.display = 'none';
+            document.getElementById('review-text').style.display = 'block';
+
+            chat.innerText = "Mapping body landmarks and calculating fabric drape physics...";
 
             setTimeout(() => {
-                const brand = brandIntelligence[document.getElementById('brandChoice').value];
-                const price = parseFloat(document.getElementById('itemPrice').value);
-                const bank = parseFloat(document.getElementById('wallet').value);
-                const impact = Math.round((price / bank) * 100);
+                const brand = clarityDB[document.getElementById('brand-input').value];
+                const fabric = document.getElementById('fabric-input').value;
+                const price = document.getElementById('price-input').value;
+                const bank = document.getElementById('bank-input').value;
+                const logistics = document.getElementById('logistics-input').value;
 
-                // End Animation
+                // Stop Sequence
                 scanner.style.display = 'none';
-                avatar.style.filter = "none";
-                avatar.style.transform = "scale(1.05)";
-                results.style.display = 'block';
+                twin.style.filter = "none";
+                twin.style.transform = "scale(1.04)";
+                if(brand.fit < 85) nodes.forEach(n => n.style.display = 'block');
 
-                // Display Persona-Based Insights
-                chat.innerText = brand.msg;
-                document.getElementById('fitVal').innerText = brand.fit + "%";
-                document.getElementById('waitVal').innerText = brand.wait + "d";
-                document.getElementById('impactVal').innerText = impact + "%";
-
-                // Verdict Finalization
-                verdict.style.display = 'block';
-                if (impact > 45) {
-                    verdict.innerText = "💸 HIGH REFUND RISK";
-                    verdict.style.backgroundColor = "#FFF0F0";
-                    verdict.style.color = var(--danger-red);
-                    chat.innerText = `Hey Jacob, this purchase takes up ${impact}% of your balance. If you return it, Isaiah's 'Pending' money risk is high for ${brand.wait} days!`;
-                } else if (brand.fit < 75) {
-                    verdict.innerText = "⚠️ SIZING GAMBLE";
-                    verdict.style.backgroundColor = "#FFF9E6";
-                    verdict.style.color = "#856404";
-                    chat.innerText = `Sarah reported high fit variance with this brand. We've flagged this as a potential 'gambling' purchase.`;
+                // Populate Analytics
+                document.getElementById('res-score').innerText = brand.fit + "%";
+                chat.innerText = brand.note;
+                
+                // Noah's Logic
+                const resMat = document.getElementById('res-material');
+                if(fabric === 'poly') {
+                    resMat.innerText = "⚠️ CATFISH RISK: Synthetic blend. In-person material will be shinier and thinner than studio photos.";
+                    resMat.style.color = "var(--danger)";
                 } else {
-                    verdict.innerText = "✨ PERFECT MATCH";
-                    verdict.style.backgroundColor = "#F0F9F0";
-                    verdict.style.color = var(--success-green);
+                    resMat.innerText = "Natural fiber density matches studio profile. Drape and feel are confirmed high-quality.";
+                    resMat.style.color = "var(--success)";
                 }
 
-            }, 2500);
+                // Isaiah's Logic
+                const impact = Math.round((price / bank) * 100);
+                document.getElementById('res-money').innerText = `Impact: ${impact}% of funds. If you return this, $${price} stays 'in the ether' for ${brand.wait} days.`;
+
+                // The Review Mirror
+                document.getElementById('review-text').style.display = 'none';
+                const photo = document.getElementById('review-photo');
+                photo.src = brand.img;
+                photo.style.display = 'block';
+                document.getElementById('review-user').innerText = `User '${brand.user}' (30" Waist): "Actual item vs. Studio"`;
+
+                // Ben's Warning
+                if(brand.fit < 75 && logistics === 'high') {
+                    document.getElementById('friction-warning').style.display = 'block';
+                } else {
+                    document.getElementById('friction-warning').style.display = 'none';
+                }
+
+            }, 3000);
         }
     </script>
 </body>
